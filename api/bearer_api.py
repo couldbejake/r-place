@@ -22,7 +22,7 @@ class Bearer:
     def fetch_token(self, username, password):
 
         self.username = username
-        print("Obtaining CSRF token...")
+        print("> Obtaining CSRF token...")
         r = self.client.get(self.LOGIN_URL)
 
         time.sleep(1)
@@ -39,19 +39,19 @@ class Bearer:
         time.sleep(1)
 
         if r.status_code != 200:
-            print("Authorization failed!")
+            print("> X Authorization failed!")
             return ""
         else:
-            print("Authorization successful!")
+            print("> V Authorization successful!")
 
-        print("Obtaining access token...")
+        print("> Obtaining access token...")
 
         r = self.client.get(self.REDDIT_URL)
         data_str = BeautifulSoup(r.content, features="html.parser").find("script", {"id": "data"}).contents[0][len("window.__r = "):-1]
 
         data = json.loads(data_str)
 
-        print("Logged in as " + username + "\n")
+        print(">>> Logged in as " + username + "\n")
 
         token = data["user"]["session"]["accessToken"]
         return token
